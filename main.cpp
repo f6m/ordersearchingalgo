@@ -19,9 +19,9 @@
 
 //+Shell
 //+Quicksort
-//+Comparation
 //+Bubble Sort
-// ...
+//+Selection
+//+Insertion
 
 using namespace::std;
 
@@ -37,10 +37,10 @@ int main(int argc,char *argv[])
     {
   cout << "Sorting Algorithm Examples" <<endl;
   cout << "Vector to order:" <<endl;
-  algord<float> s(10,*argv[1]); //An instance (object) of class algord is created, to sort 10 integers with order  > o <.
+  algord<char> s(10,*argv[1]); //An instance (object) of class algord is created, to sort 10 integers with order  > o <.
   cout<<endl;
-  cout << "Random entry type:"<< s.ramt(1.0,10.0) <<endl;
-  s.shell();
+  cout << "Random entry type:"<< s.ramt(97,122) <<endl; //97 = a, 122 = z
+  s.selectsort();
   cout<<"\n";
   cout << "Ordered vector:" <<endl;
   s.ptrvect();
