@@ -17,10 +17,14 @@ class algord
 public: //Interfaz de la clase
   algord(int n, char ord);//Constructor
   ~algord();//Destructor
+  void bubblesort();  
   void shell();//Function for Shell algorithm
   void quicksort(int izq, int der);//Function for Quicksort algorithm, needs index: left right
+  void insertsort(); // Member function for Insertion sort algorithm
+  void selectsort(); // Member function for Selection sort algorithm
   void ptrvect(); //Public function to print ordered vector
   T ramt(T low, T up); //Each time this function is called we generate a random T type
+  T ramt(int a, int b); //homonimum function 
 
 protected://Implementacion de la clase
   vector<T> V; // Define a vector with entries of type T
@@ -44,7 +48,7 @@ algord<T>::algord(int n, char ord)
   srand(time(NULL)); //Seed for random functions
 
   for(int i=0; i < n; i++) {
-    V.push_back(ramt(1.0,10.0)); //Introduce a V un tipo de dato T producido aleatoriamente
+    V.push_back(ramt(97,122)); //Introduce a V un tipo de dato T producido aleatoriamente
     std::cout<< i << "\t" << V[i] << "\n";
     } // Fin For
   N = V.size(); //Fix vector sizer
@@ -58,6 +62,12 @@ algord<T>::~algord()
 {
   //Libera la memoria creada en el constructor
   //V.clear(); //Borra los elementos del vector
+}
+// Homonimum ramt for interger/char values
+template<typename T>
+T algord<T>::ramt(int a, int b)
+{
+  return static_cast <T> (a + rand() % (b - a)); //returns a random integer in [a,b]
 }
 
 //Function to randomly generate data tipes T
@@ -82,6 +92,73 @@ bool algord<T>::order(T a,T b)
     }
 }
 
+//Blubble sort algorithm
+template<typename T>
+void algord<T>::bubblesort()
+{
+  T inter; //intermediate value to save vector entries
+  int s=0; //signal variable
+  int i=0;
+  while(s == 0 && i < N)
+    {
+      s = 1;
+      for(int j=0; j < N; j++)
+	   { 
+	  if(order(V[j],V[j+1]) && j+1 < N) //Next entry is small avoid comparations out of range
+	    {
+	      inter = V[j+1]; //Swap V[j]<->V[j+1]
+	      V[j+1] = V[j];
+	      V[j] = inter;
+	      s = 0; 
+ 	    }
+         }// End for
+      i++;
+     }// End while 
+} // End bubblesort
+
+//InsertionSort algorithm
+template<typename T>
+void algord<T>::insertsort()
+{
+  T inter; //intermediate value to save vector entries
+  int j;
+  for(int i = 0; i < N; i++) //index i starts at 0, V[0] is ordered
+    {
+     j = i;
+     while(order(V[j],V[j-1]) && j>0) //Next entry is small avoid comparations out of range
+       {
+	 inter = V[j-1]; //Swap V[j]<->V[j+1]
+	 V[j-1] = V[j];
+	 V[j] = inter;
+	 j--;
+       } //End While
+    }// End for
+}// End InsertionSort
+
+//InsertionSort algorithm
+template<typename T>
+void algord<T>::selectsort()
+{
+  T inter; //intermediate value to save vector entries
+  int min; //Assumed Minimum
+  int i,j;
+  
+  for(i = 0; i < N; i++) //index i starts at 0, V[0] is ordered
+    {
+     min = i;
+     for(j=i+1; j <= N;j++)
+       {
+	 if(order(V[j],V[min])) //Next entry is small avoid comparations out of range
+	   {
+	     min = j;
+	   } //End If
+       }// End for
+     inter = V[i]; //Swap V[i]<->V[ord]
+     V[i] = V[min];
+     V[min] = inter;
+   }// End for
+}// End SelectSort
+
 template<typename T>
 void algord<T>::shell()
 {
@@ -93,7 +170,7 @@ void algord<T>::shell()
     {
       for(i=inter; i < N; i++)
 	{
-         double tmp = V[i];
+         T tmp = V[i];
 	 int j;
 	 for(j = i;j >= inter && order(V[j-inter],tmp);j-=inter)
 	    V[j]=V[j-inter];
