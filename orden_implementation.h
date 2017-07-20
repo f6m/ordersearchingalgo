@@ -1,11 +1,12 @@
 
-#ifndef ORDER_H
-#define ORDER_H // To avoid distinct files with this name class 
+#ifndef ORDERSEARCH_H
+#define ORDERSEARCH_H // To avoid distinct files with this name class 
 
 #include <iostream>
 #include <vector>
 #include <ctime>    // library to function time
 #include <cstdlib>  // library to functions srand/rand
+#include <cmath>    // for floor
 
 using namespace std;
 
@@ -14,7 +15,7 @@ using namespace std;
 template<class T> //we only need template for vector V
 class algord
 {
-public: //Interfaz de la clase
+public: //Class Interface
   algord(int n, char ord);//Constructor
   ~algord();//Destructor
   void bubblesort();  
@@ -24,7 +25,9 @@ public: //Interfaz de la clase
   void selectsort(); // Member function for Selection sort algorithm
   void ptrvect(); //Public function to print ordered vector
   T ramt(T low, T up); //Each time this function is called we generate a random T type
-  T ramt(int a, int b); //homonimum function 
+  T ramt(int a, int b); //homonimum function
+  int sequential(T a); //Function for search a data in V
+  int binary(T a); //Function for binary search
 
 protected://Implementacion de la clase
   vector<T> V; // Define a vector with entries of type T
@@ -216,4 +219,34 @@ void algord<T>::ptrvect()
    cout<<(*it)<<endl;
 }
 
-#endif //ORDER_H
+//// Search algorithms
+
+//algord class function for sequential search algorithm
+
+template<typename T>
+int algord<T>::sequential(T a)
+{
+  int i=-1;
+  while(V[++i] != a && i < N);
+  return i;     
+} // End Sequential
+
+//algord class function for sequential search algorithm
+template<typename T>
+int algord<T>::binary(T a)
+{
+  int m, mid;
+  m = floor(N/2);
+  mid = 0;
+  while(abs(m-mid) > 0 && V[m] != a)
+  {
+    mid = m;
+    if( order(V[m],a) )
+       m = floor(m/2);
+       else
+	 m = floor((N-m)/2);  
+  }
+ return (V[m]==a)? m: -1;     
+} // End Sequential
+
+#endif //ORDERSEARCH_H
